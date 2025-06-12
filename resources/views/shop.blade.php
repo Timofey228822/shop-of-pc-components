@@ -129,6 +129,11 @@
             padding: 20px 0;
             margin-top: 40px;
         }
+
+        .product-link {
+            text-decoration: none;
+            color: inherit;
+        }
         
         @media (max-width: 768px) {
             .categories {
@@ -174,6 +179,7 @@
         
         <div class="products-grid">
             @foreach ($result as $line)
+            <a href="/product/productName={{ $line['name'] }}" class="product-link">
                 <div class="product-card">
                     <!-- <img src="https://via.placeholder.com/300x200?text=Материнская+плата" alt="Материнская плата" class="product-image"> -->
                     <div class="product-info">
@@ -182,6 +188,7 @@
                         <div class="product-price">{{ $line['price'] }}</div>
                     </div>
                 </div>
+            </a>
             @endforeach
             
             

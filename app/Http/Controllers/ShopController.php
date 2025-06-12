@@ -12,13 +12,15 @@ class ShopController extends Controller
     function shop() {
         $data = DB::select('SELECT * FROM categories');
 
-        $lastId = DB::table('products')->latest('id')->first()?->id;
-        $result = [];
+        // $lastId = DB::table('products')->latest('id')->first()?->id;
+        // $result = [];
 
-        foreach(range(1, 6) as $num ) {
-            $item = Product::find($num)->first();
-            $result[$num - 1] = $item;
-        }
+        // foreach(range(1, $lastId) as $num ) {
+        //     $item = Product::find($num)->first();
+        //     $result[$num - 1] = $item;
+        // }
+
+        $result = Product::all()->toArray();
 
         return view('shop', compact('data', 'result'));
     }
