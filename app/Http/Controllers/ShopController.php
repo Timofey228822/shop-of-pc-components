@@ -15,9 +15,17 @@ class ShopController extends Controller
 
         return view('product', compact('product'));
     }
+    
     function shop() {
+
+        //// TODO используй для таких запросов Eloquent ORM
+        //// именуй переменные правильно не data а categories
+        //// если ты испольуешь это запрос для меню сквозного, тееб нужно это переписать 
+        //// чтобы не городить это запрос в каждом методе контроллера
+        //// этот запрос должен быть глобальным, сделать такое можно через контейнер провайдер
         $data = DB::select('SELECT * FROM categories');
 
+        //// TODO мусор не оставляем
         // $lastId = DB::table('products')->latest('id')->first()?->id;
         // $result = [];
 
@@ -26,15 +34,19 @@ class ShopController extends Controller
         //     $result[$num - 1] = $item;
         // }
 
+        /// TODO используй пагинацию для товаров: all() делать нельзя
         $result = Product::all()->toArray();
 
         return view('shop', compact('data', 'result'));
     }
 
     function show_product($category_id) {
+
         $data = DB::select('SELECT * FROM categories');
+
         $category = Category::find($category_id);
         $products = $category->products;
+
         $result = $products->map(function($product) {
             return [
                 'name' => $product->name,
