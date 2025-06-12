@@ -76,6 +76,22 @@
             gap: 25px;
             margin: 30px 0;
         }
+
+        .dashboard {
+            background:rgb(16, 8, 94);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+        
+        .dashboard:hover {
+            background:rgb(9, 5, 73);
+        }
         
         .product-card {
             background-color: white;
@@ -153,6 +169,9 @@
         <div class="container header-content">
             <div class="logo">PC Components</div>
             <div class="cart">Корзина (0)</div>
+            <a href="{{ route('dashboard') }}">
+                <button type="submit" class="dashboard">Личный Кабинет</button>
+            </a>
         </div>
     </header>
     

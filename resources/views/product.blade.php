@@ -105,9 +105,25 @@
             margin-bottom: 20px;
             transition: background 0.3s;
         }
+
+        .back-to-shop {
+            background:rgb(129, 111, 233);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
         
         .add-to-cart:hover {
             background: #45a049;
+        }
+
+        .back-to-shop:hover {
+            background:rgb(47, 56, 185);
         }
         
         .product-description {
@@ -196,6 +212,9 @@
                 </div>
                 
                 <button class="add-to-cart">Добавить в корзину</button>
+                <form method="GET" action="{{ route('shop') }}">
+                    <button type="submit" class="back-to-shop">Обратно</button>
+                </form>
                 
                 <div class="product-description">
                     <p>{{ $product->description }}</p>

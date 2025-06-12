@@ -114,4 +114,13 @@ class UserController extends Controller
 
         return Redirect('http://127.0.0.1:8000/dashboard');
     }
+
+    function exit() {
+        if (Session::get('gay')) {
+            Session::forget('gay');
+            return view('welcome');
+        }
+
+        return view('welcome');
+    }
 }

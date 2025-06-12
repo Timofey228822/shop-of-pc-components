@@ -151,7 +151,7 @@
 <body>
     <header>
         <div class="container header-content">
-            <div class="logo">МойМагазин </div> 
+            <div class="logo">Магазин того, что каждый бы хотел себе приобрести</div> 
             <div class="user-info">
                 <span>{{ $data->name ?? 'guest' }}</span>
                 <div class="avatar"></div>
@@ -189,6 +189,10 @@
                     <input name="password" type="pass" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <form method="GET" action="{{ route('exit') }}">
+                    <button type="submit" class="btn btn-primary">Выйти из Аккаунта</button>
+                </form>
+        </div>
             </form>
         </div>
 
@@ -255,7 +259,7 @@
                 </div>
             </div>
         </div>
-        <div id="shop" class="tab-content active">
+        <div id="shop" class="tab-content">
             <form method="GET" action="{{ route('shop') }}">
                 <button type="submit" class="btn btn-primary">Перейти в магаз</button>
             </form>
