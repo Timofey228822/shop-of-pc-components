@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+
+    function show_product_info($product_name) {
+        $product = Product::where('name', $product_name)->first();
+
+        return view('product', compact('product'));
+    }
     function shop() {
         $data = DB::select('SELECT * FROM categories');
 
