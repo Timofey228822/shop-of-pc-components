@@ -3,112 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Компьютерные комплектующие</title>
+    <title>DarkShop - Главная</title>
     <style>
         * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            background-color: #121212;
+            color: #e0e0e0;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* Сайдбар с категориями */
+        .sidebar {
+            width: 250px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid #333;
         }
         
         .logo {
             font-size: 24px;
             font-weight: bold;
+            margin-bottom: 30px;
+            color: #bb86fc;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
         }
         
-        .categories-nav {
-            background-color: #34495e;
-            padding: 15px 0;
+        .categories h3 {
+            color: #bb86fc;
+            margin-bottom: 15px;
+            font-size: 18px;
         }
         
-        .categories {
-            display: flex;
+        .categories ul {
             list-style: none;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 5px 0;
         }
         
-        .category-link {
-            display: block;
-            color: white;
+        .categories li {
+            margin-bottom: 10px;
+        }
+        
+        .categories a {
+            color: #e0e0e0;
             text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            background-color: rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
         
-        .category-link:hover, .category-link.active {
-            background-color: #e74c3c;
+        .categories a:hover {
+            background-color: #333;
+            color: #bb86fc;
+        }
+        
+        .user-panel {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        
+        .user-panel a {
+            display: inline-block;
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .user-panel a:hover {
+            background-color: #9a67cb;
+        }
+        
+        /* Основное содержимое */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 50%;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 4px 0 0 4px;
+            color: #e0e0e0;
+            outline: none;
+        }
+        
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .cart-icon {
+            position: relative;
+            color: #e0e0e0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #bb86fc;
+            color: #121212;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
         }
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .dashboard {
-            background:rgb(16, 8, 94);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: background 0.3s;
-        }
-        
-        .dashboard:hover {
-            background:rgb(9, 5, 73);
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
         }
         
         .product-card {
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
+            border: 1px solid #333;
         }
         
         .product-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .product-image {
-            width: 100%;
             height: 200px;
-            object-fit: cover;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
         }
         
         .product-info {
@@ -116,179 +188,109 @@
         }
         
         .product-title {
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 10px;
-            color: #2c3e50;
+            color: #e0e0e0;
         }
         
         .product-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            color: #e74c3c;
-            margin: 10px 0;
+            color: #bb86fc;
+            margin-bottom: 15px;
         }
         
-        .product-category {
-            display: inline-block;
-            background-color: #f1f1f1;
-            color: #7f8c8d;
-            padding: 3px 8px;
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .add-to-cart {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 8px 15px;
             border-radius: 4px;
-            font-size: 12px;
-            margin-top: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
         
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+        .add-to-cart:hover {
+            background-color: #9a67cb;
+        }
+        
+        .wishlist {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .wishlist:hover {
+            color: #ff5555;
         }
 
-        .product-link {
+        a {
             text-decoration: none;
-            color: inherit;
-        }
-        
-        @media (max-width: 768px) {
-            .categories {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">PC Components</div>
-            <div class="cart">Корзина (0)</div>
-            <a href="{{ route('dashboard') }}">
-                <button type="submit" class="dashboard">Личный Кабинет</button>
-            </a>
+    <div class="container">
+        <!-- Сайдбар с категориями -->
+        <div class="sidebar">
+            <div class="logo">DarkShop</div>
+            
+            <div class="categories">
+                <h3>Категории</h3>
+                <ul>
+                    @foreach ($categories as $category)
+                        <li><a href="/shop/category_id={{ $category['id'] }}">{{ $category['name'] }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            
+            <div class="user-panel">
+                <a href="{{ route('dashboard') }}">Личный кабинет</a>
+            </div>
         </div>
-    </header>
-    
-    <nav class="categories-nav">
-        <div class="container">
-            <ul class="categories">
-                <li><a href="/shop" class="category-link">Все товары</a></li>
-                @foreach ($data as $dat)
-                    <li><a href="/shop/category_id={{ $dat->id }}" class="category-link">{{ $dat->name }}</a></li>
-                @endforeach
-                <!-- <li><a href="/products?category=материнские платы" class="category-link">Материнские платы</a></li>
-                <li><a href="/products?category=оперативные памяти" class="category-link">Оперативная память</a></li>
-                <li><a href="/products?category=блоки питания" class="category-link">Блоки питания</a></li>
-                <li><a href="/products?category=процессоры" class="category-link">Процессоры</a></li>
-                <li><a href="/products?category=видеокарты" class="category-link">Видеокарты</a></li>
-                <li><a href="/products?category=кулеры" class="category-link">Кулеры</a></li>
-                <li><a href="/products?category=прикольные кулеры" class="category-link">Прикольные кулеры</a></li> -->
-            </ul>
-        </div>
-    </nav>
-    
-    <main class="container">
-        <h1>Каталог товаров</h1>
         
-        <div class="products-grid">
-            @foreach ($result as $line)
-            <a href="/product/productName={{ $line['name'] }}" class="product-link">
-                <div class="product-card">
-                    <!-- <img src="https://via.placeholder.com/300x200?text=Материнская+плата" alt="Материнская плата" class="product-image"> -->
-                    <div class="product-info">
-                        <h3 class="product-title">{{ $line['name'] }}</h3>
-                        <p class="product-description">{{ $line['description'] }}</p>
-                        <div class="product-price">{{ $line['price'] }}</div>
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Поиск товаров...">
+                    <button>Найти</button>
+                </div>
+                <div class="cart-icon">
+                    🛒
+                    <span class="cart-count">3</span>
+                </div>
+            </div>
+            
+            <div class="products-grid">
+                @foreach ($products as $product)
+                <a href="/product/productName={{ $product['name'] }}">
+                    <div class="product-card">
+                        <div class="product-image">
+                            [Изображение товара]
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">{{ $product['name'] }}</h3>
+                            <div class="product-price">{{ $product['price'] }}₽</div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">В корзину</button>
+                                <button class="wishlist">♥</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </a>
-            @endforeach
-            
-            
-            <!-- Пример товара 2 -->
-            <!-- <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Оперативная+память" alt="Оперативная память" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Оперативная память Kingston 16GB</h3>
-                    <p class="product-description">DDR4, 3200MHz, 2x8GB</p>
-                    <div class="product-price">5 499 ₽</div>
-                    <span class="product-category">оперативные памяти</span>
-                </div>
+                </a>
+                @endforeach
             </div>
-            
-
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Процессор" alt="Процессор" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Процессор Intel Core i7-10700K</h3>
-                    <p class="product-description">8 ядер, 16 потоков, 3.8 ГГц</p>
-                    <div class="product-price">24 999 ₽</div>
-                    <span class="product-category">процессоры</span>
-                </div>
-            </div>
-            
-
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Видеокарта" alt="Видеокарта" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Видеокарта NVIDIA RTX 3070</h3>
-                    <p class="product-description">8GB GDDR6, 5888 ядер</p>
-                    <div class="product-price">59 999 ₽</div>
-                    <span class="product-category">видеокарты</span>
-                </div>
-            </div>
-
-
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Блок+питания" alt="Блок питания" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Блок питания Cooler Master 750W</h3>
-                    <p class="product-description">80+ Gold, модульный</p>
-                    <div class="product-price">7 299 ₽</div>
-                    <span class="product-category">блоки питания</span>
-                </div>
-            </div>
-            
-
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x200?text=Кулер" alt="Кулер" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">Кулер для процессора DeepCool</h3>
-                    <p class="product-description">Тихий, RGB подсветка</p>
-                    <div class="product-price">2 999 ₽</div>
-                    <span class="product-category">кулеры</span>
-                </div>
-            </div>  -->
         </div>
-    </main>
-    
-    <footer>
-        <div class="container">
-            <p>© 2023 PC Components. Все права защищены.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Подсветка активной категории
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentCategory = urlParams.get('category');
-            
-            const categoryLinks = document.querySelectorAll('.category-link');
-            categoryLinks.forEach(link => {
-                const linkCategory = link.getAttribute('href').split('=')[1];
-                if (linkCategory === currentCategory || 
-                   (!currentCategory && link.textContent.trim() === 'Все товары')) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
+    </div>
 </body>
 </html>
