@@ -189,10 +189,11 @@
                     <input name="password" type="pass" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                <form method="GET" action="{{ route('exit') }}">
-                    <button type="submit" class="btn btn-primary">Выйти из Аккаунта</button>
-                </form>
-        </div>
+                
+            </form>
+            
+            <form method="GET" action="{{ route('exit') }}">
+                <button type="submit" class="btn btn-primary">Выйти из Аккаунта</button>
             </form>
         </div>
 

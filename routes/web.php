@@ -15,4 +15,4 @@ Route::put('/update_data', [UserController::class, 'update_data'])->name('update
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('/shop/category_id={x}', [ShopController::class, 'show_product']);
 Route::get('/product/productName={x}', [ShopController::class, 'show_product_info']);
-Route::get('/', [UserController::class, 'exit'])->name('exit');
+Route::get('/dashboard/exit', [UserController::class, 'exit'])->name('exit');

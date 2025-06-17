@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\User;
@@ -84,7 +83,7 @@ class UserService
     }
 
     function dashboard() {
-
+        //eст СЛИШКОМ много памяти
         $data = null;
 
         if (Session::get('gay')) {

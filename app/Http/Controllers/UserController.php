@@ -17,10 +17,12 @@ class UserController extends Controller
     function index() {
 
         if (Session::get('gay')) {
-            return redirect()->route('dashboard');
+            return Redirect()->route('dashboard');
         }
 
-        return view('welcome');
+        else {
+            return view('welcome');
+        }
     }
 
     function register() {
@@ -32,10 +34,13 @@ class UserController extends Controller
     }
 
     function dashboard() {
-        $result = $this->dashboard();
-        $data = $result['data'];
 
-        return view($result['dashboard'], compact('data'));
+        if (Session::get('gay')) {
+            $data = User::where('id', Session::get('gay'))->first();
+            return view('dashboard', compact('data'));
+        }
+
+        return view('dashboard');
     }
     function create_user(Request $request) {
         
