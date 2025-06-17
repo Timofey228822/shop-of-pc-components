@@ -182,7 +182,7 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Телефон</label>
-                    <input name="phone" type="tel" value="{{ $data->phone ?? 'no phone' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
+                    <input name="phone" type="tel" value="{{ $data->phone ?? '' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Пароль</label>

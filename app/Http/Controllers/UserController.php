@@ -6,23 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected UserService $userService
+    ) {}
+
     function index() {
 
         if (Session::get('gay')) {
-            return Redirect('http://127.0.0.1:8000/dashboard');
+            return redirect()->route('dashboard');
         }
 
         return view('welcome');
     }
 
     function register() {
-
-        
-
         return view('register');
     }
 
@@ -31,13 +32,10 @@ class UserController extends Controller
     }
 
     function dashboard() {
+        $result = $this->dashboard();
+        $data = $result['data'];
 
-        if (Session::get('gay')) {
-            $data = User::where('id', Session::get('gay'))->first();
-            return view('dashboard', compact('data'));
-        }
-
-        return view('dashboard');
+        return view($result['dashboard'], compact('data'));
     }
     function create_user(Request $request) {
         
@@ -47,16 +45,12 @@ class UserController extends Controller
         'password' => 'string',
         ]);
 
+        $result = $this->userService->create_user(
+            $validated['name'],
+            $validated['email'], 
+            $validated['password']);
         
-
-        
-        try {
-        $reg = User::create($validated);
-        } catch(Error) {
-            return back()->with('error', 'Неверные данные');
-        }
-        
-        return Redirect('http://127.0.0.1:8000/login');
+        return redirect()->route($result);
     }
 
     function auth_user(Request $request) {
@@ -66,61 +60,33 @@ class UserController extends Controller
         'password' => 'string',
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
+        $result = $this->userService->auth_user(
+            $validated['email'], 
+            $validated['username'],
+            $validated['password']);
         
-        if (!$user) {
-            return back()->with('error', 'Неверные данные');
-        }
-
-        if (!Hash::check($validated['password'], $user->password)) {
-            return back()->with('error', 'Неверные данные');
-        }
-
-        else {
-            if ($validated['username'] == $user->name) {
-                Session::put('gay', $user->id);
-                return Redirect('http://127.0.0.1:8000/dashboard');
-            }
-            else {
-                
-                return back()->with('error', 'Неверные данные');
-            }
-        }
+        return redirect()->route($result);
     }
 
     function update_data(Request $request) {
         $validated = $request->validate([
-        'email' => 'string',
-        'name' => 'string',
-        'phone' => 'string',
-        'password' => 'required|string'
+            'email' => 'string',
+            'name' => 'string',
+            'phone' => 'int',
+            'password' => 'required|string'
         ]);
         
-        $update = User::where('email', $validated['email'])->first();
-
-        if ($update) {
-            if ($update->password != $validated['password']) {
-                return back()->with('error', 'Неверный парол');
-            }
-        }
-
-        else {
-            return back()->with('error', 'Вы гость или бд сломалась');
-        }
-
+        $result = $this->userService->update_data(
+            $validated['email'], 
+            $validated['name'],
+            $validated['phone'],
+            $validated['password']);
         
-
-        $update->update($validated);
-
-        return Redirect('http://127.0.0.1:8000/dashboard');
+        return redirect()->route($result);
     }
 
     function exit() {
-        if (Session::get('gay')) {
-            Session::forget('gay');
-            return view('welcome');
-        }
-
-        return view('welcome');
+        $result = $this->userService->exit();
+        return view($result);
     }
 }
