@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\User;
@@ -9,47 +10,47 @@ use Illuminate\Support\Facades\Session;
 
 class UserService
 {
-    function create_user(string $name, string $email, string $password) {
+    function createUser(array $data): void
+    {
+        $name = $data['name'];
+        $email = $data['email'];
+        $password = Hash::make($data['password']);  
 
-        try {
-
-        $reg = User::create([
-            'name' => $name, 
-            'email' => $email, 
-            'password' => $password
-        ]);
-
-        } catch(Throwable $e) {
+        if (User::where('email', $email)->first()) {
             throw new \Exception('Такой чел уже есть');
         }
-        
-        return 'login';
+
+        User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password
+        ]);
     }
 
-    function auth_user(string $email, string $username, string $password) {
+    function auth_user(string $email, string $username, string $password)
+    {
+
         $user = User::where('email', $email)->first();
-        
+
         if (!$user) {
             throw new \Exception('Такого чела нет');
         }
 
         if (!Hash::check($password, $user->password)) {
-            throw new \Exception('Неверный пароль');;
+            throw new \Exception('Неверный пароль');
         }
 
-        else {
-            if ($username == $user->name) {
-                Session::put('gay', $user->id);
-                return 'dashboard';
-            }
-            else {
-                
-                throw new \Exception('Нверное имя пользователя');
-            }
-        }
+
+        if ($username == $user->name) {
+            Session::put('gay', $user->id);
+            return 'dashboard';
+        } 
+
+        throw new \Exception('Нверное имя пользователя');
     }
 
-    function update_data(string $email, string $name, int $phone = Null, string $password) {
+    function update_data(string $email, string $name, int $phone = Null, string $password)
+    {
         $update = User::where('email', $email)->first();
 
         if ($update) {
@@ -57,9 +58,7 @@ class UserService
 
                 throw new \Exception('Неверный пароль');
             }
-        }
-
-        else {
+        } else {
 
             throw new \Exception('Вы гост');
         }
@@ -74,7 +73,8 @@ class UserService
         return 'dashboard';
     }
 
-    function exit() {
+    function exit()
+    {
         if (Session::get('gay')) {
             Session::forget('gay');
         }
@@ -82,7 +82,8 @@ class UserService
         return 'welcome';
     }
 
-    function dashboard() {
+    function dashboard()
+    {
         //eст СЛИШКОМ много памяти
         $data = null;
 

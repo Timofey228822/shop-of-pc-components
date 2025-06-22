@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Services\UserService;
 
@@ -14,26 +14,27 @@ class UserController extends Controller
         protected UserService $userService
     ) {}
 
-    function index() {
-
+    function index()
+    {
         if (Session::get('gay')) {
             return Redirect()->route('dashboard');
         }
 
-        else {
-            return view('welcome');
-        }
+        return view('welcome');
     }
 
-    function register() {
+    function register()
+    {
         return view('register');
     }
 
-    function login() {
+    function login()
+    {
         return view('login');
     }
 
-    function dashboard() {
+    function dashboard()
+    {
 
         if (Session::get('gay')) {
             $data = User::where('id', Session::get('gay'))->first();
@@ -42,55 +43,52 @@ class UserController extends Controller
 
         return view('dashboard');
     }
-    function create_user(Request $request) {
-        
-        $validated = $request->validate([
-        'name' => 'string',
-        'email' => 'required|email|unique:user,email',
-        'password' => 'string',
-        ]);
+    function create_user(CreateUserRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        $this->userService->createUser($request->validated());
 
-        $result = $this->userService->create_user(
-            $validated['name'],
-            $validated['email'], 
-            $validated['password']);
-        
-        return redirect()->route($result);
+        return redirect()->route('login');
     }
 
-    function auth_user(Request $request) {
+    function auth_user(Request $request)
+    {
         $validated = $request->validate([
-        'email' => 'string',
-        'username' => 'string',
-        'password' => 'string',
+            'email' => 'string',
+            'username' => 'string',
+            'password' => 'string',
         ]);
 
         $result = $this->userService->auth_user(
-            $validated['email'], 
+            $validated['email'],
             $validated['username'],
-            $validated['password']);
-        
+            $validated['password']
+        );
+
         return redirect()->route($result);
     }
 
-    function update_data(Request $request) {
+    function update_data(Request $request)
+    {
+
         $validated = $request->validate([
             'email' => 'string',
             'name' => 'string',
             'phone' => 'int',
             'password' => 'required|string'
         ]);
-        
+
         $result = $this->userService->update_data(
-            $validated['email'], 
+            $validated['email'],
             $validated['name'],
             $validated['phone'],
-            $validated['password']);
-        
+            $validated['password']
+        );
+
         return redirect()->route($result);
     }
 
-    function exit() {
+    function exit()
+    {
         $result = $this->userService->exit();
         return view($result);
     }
