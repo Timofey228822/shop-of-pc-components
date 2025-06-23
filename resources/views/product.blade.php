@@ -17,8 +17,11 @@
                 
                 <div class="product-rating">
                 </div>
-                
-                <button class="add-to-cart">Добавить в корзину</button>
+
+                <form method="GET" action="/product/productName={{ $product->name }}/add_to_cart">
+                    <button class="add-to-cart">Добавить в корзину</button>
+                </form>
+
                 <form method="GET" action="{{ route('shop') }}">
                     <button type="submit" class="back-to-shop">Обратно</button>
                 </form>

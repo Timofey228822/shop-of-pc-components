@@ -48,8 +48,6 @@
                             <h3 class="product-title">{{ $product['name'] }}</h3>
                             <div class="product-price">{{ $product['price'] }}₽</div>
                             <div class="product-actions">
-                                <button class="add-to-cart">В корзину</button>
-                                <button class="wishlist">♥</button>
                             </div>
                         </div>
                     </div>

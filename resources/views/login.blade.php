@@ -11,7 +11,7 @@
             <p>Введите свои данные для входа</p>
         </div>
         <form method="POST" action="{{ route('auth') }}">
-            {{ csrf_field() }}
+            @csrf
             <div class="form-group">
                 <label for="email">Электронная почта</label>
                 <input 
@@ -25,11 +25,11 @@
             </div>
 
             <div class="form-group">
-                <label for="username">Имя пользователя</label>
+                <label for="name">Имя пользователя</label>
                 <input 
                     type="text" 
-                    id="username" 
-                    name="username" 
+                    id="name" 
+                    name="name" 
                     required 
                     placeholder="Ваш логин"
 
