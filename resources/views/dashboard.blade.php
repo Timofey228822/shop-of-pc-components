@@ -34,11 +34,7 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Телефон</label>
-                    <input name="phone" type="tel" value="{{ $data->phone ?? '' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px;">Пароль</label>
-                    <input name="password" type="pass" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
+                    <input type="tel" value="{{ $data->phone ?? '' }}" name="phone" pattern="^(\+?\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{2}[\s-]?\d{2}$" title="Формат: +7 XXX XXX XX XX или 8XXX..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                 

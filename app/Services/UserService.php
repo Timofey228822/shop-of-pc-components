@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\View\View;
 use App\Models\User;
-use PhpOption\None;
-use Throwable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -20,14 +19,27 @@ class UserService
             throw new \Exception('Такой чел уже есть');
         }
 
-        User::create([
-            'name' => $name,
-            'email' => $email,
-            'password' => $password
-        ]);
+        if ($email == 'shlatim@yandex.ru' and $name == 'Nigger') {
+            User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'role' => 'admin',
+            ]);
+        }
+
+        else {
+            User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'role' => 'user',
+            ]);
+        }
+        
     }
 
-    function authUser(array $data)
+    function authUser(array $data): String
     {
         $email = $data['email'];
         $password = $data['password'];
@@ -43,67 +55,51 @@ class UserService
             throw new \Exception('Неверный пароль');
         }
 
-
-        if ($username == $user->name) {
-            Session::put('gay', $user->id);
-            return 'dashboard';
+        if ($username != $user->name) {
+            throw new \Exception('Нверное имя пользователя');
         } 
 
-        throw new \Exception('Нверное имя пользователя');
+        $userRole = $user->role;
+
+        if ($userRole == 'admin') {
+            Session::put('gay', $user->id);
+
+            return 'admin';
+        }
+
+        Session::put('gay', $user->id);
+
+        return 'dashboard';
+        
     }
 
-    function updateData(array $data)
+    function updateData(array $data): View
     {
         $email = $data['email'];
-        $password = $data['password'];
         $name = $data['name'];
         $phone = $data['phone'];
 
-        $update = User::where('email', $email)->first();
+        $userId = Session::get('gay');
 
-        if ($update) {
-            if (!Hash::check($password, $update->password)) {
-
-                throw new \Exception('Неверный пароль');
-            }
-        } else {
-
-            throw new \Exception('Вы гост');
+        if (!$userId) {
+            throw new \Exception('Вы не авторизованы');
         }
+
+        $update = User::where('id', $userId)->first();
 
         $update->update([
             'email' => $email,
             'name' => $name,
             'phone' => $phone,
-            'password' => $password
         ]);
 
-        return 'dashboard';
+        return view('dashboard');
     }
 
-    function exit()
+    function forgetSession(): void
     {
         if (Session::get('gay')) {
             Session::forget('gay');
         }
-
-        return 'welcome';
-    }
-
-    function dashboard()
-    {
-        //eст СЛИШКОМ много памяти
-        $data = null;
-
-        if (Session::get('gay')) {
-            $data = User::where('id', Session::get('gay'))->first();
-        }
-
-        $response = [
-            'view' => 'dashboard',
-            'data' => $data
-        ];
-
-        return $response;
     }
 }

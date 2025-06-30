@@ -11,9 +11,9 @@
 
     @yield('header', '')
     
-    <main class="content">
+
         @yield('content')
-    </main>
+
 
     @stack('scripts')
 </body>
