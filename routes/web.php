@@ -6,13 +6,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 
-Route::get('/',[UserController::class, 'index'])->name('welcome');
+Route::get('/', [UserController::class, 'index'])->name('welcome');
 
-Route::get('/register', function() {
+Route::get('/register', function () {
     return view('register');
 })->name('register');
 Route::post('/create', [UserController::class, 'create_user'])->name('create');
-Route::get('/login', function() {
+Route::get('/login', function () {
     return view('login');
 })->name('login');
 Route::post('/auth', [UserController::class, 'auth_user'])->name('auth');
@@ -34,15 +34,15 @@ Route::get('/admin/products/add_product', [AdminController::class, 'add_product_
 Route::get('/admin/changeProduct/productId={productId}', [AdminController::class, 'change_product_page'])->name('change_product_page');
 Route::put('/admin/changeProduct/productId={productId}/change', [AdminController::class, 'change_product'])->name('change_product');
 Route::get('/admin/products/delete/productId={productId}', [AdminController::class, 'delete_product'])->name('delete_product');
-Route::get('/admin/categories/addCategory', function() {
+Route::get('/admin/categories/addCategory', function () {
     return view('admin_add_category');
 })->name('add_category_page');
 Route::post('/admin/categories/addCategory/adding', [AdminController::class, 'add_category'])->name('add_category');
 Route::get('/admin/categories/updateCategory/CategoryId={CategoryId}', [AdminController::class, 'update_category_page'])->name('update_category_page');
 Route::post('/admin/categories/updateCategory/CategoryId={CategoryId}/update', [AdminController::class, 'update_category'])->name('update_category');
-Route::get('/admin/categories/deleteCategory/CategoryId={CategoryId}', [AdminController::class, 'delete_category'])->name('delete_category');
+Route::delete('/admin/categories/deleteCategory/CategoryId={CategoryId}', [AdminController::class, 'delete_category'])->name('delete_category');
 Route::get('/admin/users/deleteUser/userId={userId}', [AdminController::class, 'delete_user'])->name('delete_user');
-Route::get('/admin/admin/addAdmin', function() {
+Route::get('/admin/admin/addAdmin', function () {
     return view('admin_add_admin');
 })->name('add_admin_page');
 Route::put('/admin/admin/addAdmin/add', [AdminController::class, 'add_admin'])->name('add_admin');

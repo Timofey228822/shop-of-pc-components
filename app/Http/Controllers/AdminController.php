@@ -32,13 +32,15 @@ class AdminController extends Controller
     }
 
     function dashboard() {
-        $data = $this->adminService->collectAllData('dashboard');
+
+        $data = $this->adminService->getUsersAndProductsCount();
 
         return view('admin_dashboard', compact('data'));
     }
 
     function products() {
-        $data = $this->adminService->collectAllData('products');
+
+        $data = Product::paginate(15);
 
         return view('admin_products', compact('data'));
     }
@@ -68,6 +70,7 @@ class AdminController extends Controller
     }
 
     function change_product_page($productId): View {
+        
         $data = $this->adminService->change_product_page($productId);
 
         $categories = $data[1];

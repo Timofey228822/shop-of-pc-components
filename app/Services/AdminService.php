@@ -12,7 +12,22 @@ use Illuminate\Database\Eloquent\Collection;
 
 class AdminService
 {
+
+    /**
+     * Collects and returns the count of users and products.
+     *
+     * @return array<int, int> [users, products]
+     */
+    public function getUsersAndProductsCount(): array
+    {
+        return [
+            User::count(),
+            Product::count()
+        ];
+    }
+
     function collectAllData(string $type): array|LengthAwarePaginator|Collection {
+
         if ($type == 'dashboard') {
             $products = Product::count();
             $users = User::count();
@@ -77,6 +92,7 @@ class AdminService
     }
 
     function change_product_page(int $productId): array {
+        
         $product = Product::where('id', $productId)->first();
 
         $categories = Category::all();
