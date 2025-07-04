@@ -37,7 +37,9 @@
                                         <button class="btn btn-primary">Редактировать</button>
                                     </form>
                                     
-                                    <form method="GET" action="{{ route('delete_category', $category[0]) }}">
+                                    <form method="POST" action="{{ route('delete_category', $category[0]) }}">
+                                        @csrf
+                                        @method('DELETE')
                                         <button class="btn btn-danger">Удалить</button>
                                     </form>
                                     

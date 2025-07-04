@@ -34,7 +34,9 @@
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
-                                <form method="GET" action="{{ route('delete_user', $user->id) }}">
+                                <form method="POST" action="{{ route('delete_user', $user->id) }}">
+                                    @csrf
+                                    @method('DELETE')
                                     <button class="btn btn-warning">удолить</button>
                                 </form>
                                 

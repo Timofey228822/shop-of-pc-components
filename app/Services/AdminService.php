@@ -26,46 +26,17 @@ class AdminService
         ];
     }
 
-    function collectAllData(string $type): array|LengthAwarePaginator|Collection {
+    public function getAllCategories(): array
+    {
+        $allCategories = [];
 
-        if ($type == 'dashboard') {
-            $products = Product::count();
-            $users = User::count();
+        $categories = Category::all();
 
-            return [
-                $users,
-                $products
-            ];
+        foreach ($categories as $category) {
+            array_push($allCategories, [$category->id, $category->name]);
         }
 
-        if ($type == 'products') {
-            $first15Products = Product::paginate(15);
-
-            return $first15Products;
-        }
-
-        if ($type == 'categories') {
-            $allCategories = [];
-
-            $categories = Category::all();
-
-            foreach ($categories as $category) {
-                array_push($allCategories, [$category->id, $category->name]);
-            }
-
-            return $allCategories;
-        }
-
-        if ($type == 'users') {
-            $first15Users = User::paginate(15)->where('role', 'user');
-
-            return $first15Users;
-        }
-
-        $allAdmins = User::paginate(15)->where('role', 'admin');
-
-        return $allAdmins;
-
+        return $allCategories;
     }
 
     function add_product(array $data): void {

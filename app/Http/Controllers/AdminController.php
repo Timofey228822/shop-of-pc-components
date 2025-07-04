@@ -19,57 +19,57 @@ class AdminController extends Controller
         protected AdminService $adminService
     ) {}
 
-    function admin(): View {
-        $data = $this->adminService->collectAllData('dashboard');
+    function indexAdmin(): View {
+        $data = $this->adminService->getUsersAndProductsCount();
 
         return view('admin', compact('data'));
     }
 
-    function add_product(AddProductRequest $request) {
+    function storeProduct(AddProductRequest $request) {
         $this->adminService->add_product($request->validated());
 
         return redirect()->route('admin');
     }
 
-    function dashboard() {
+    function indexDashboard() {
 
         $data = $this->adminService->getUsersAndProductsCount();
 
         return view('admin_dashboard', compact('data'));
     }
 
-    function products() {
+    function indexProducts() {
 
         $data = Product::paginate(15);
 
         return view('admin_products', compact('data'));
     }
 
-    function categories() {
-        $data = $this->adminService->collectAllData('categories');
+    function indexCategories() {
+        $data = $this->adminService->getAllCategories();
 
         return view('admin_categories', compact('data'));
     }
 
-    function users() {
-        $data = $this->adminService->collectAllData('users');
+    function indexUsers() {
+        $data = User::paginate(15)->where('role', 'user');
 
         return view('admin_users', compact('data'));
     }
 
-    function admins() {
-        $data = $this->adminService->collectAllData('admins');
+    function indexAdmins() {
+        $data = User::paginate(15)->where('role', 'admin');
 
         return view('admin_admin', compact('data'));
     }
 
-    function add_product_page() {
+    function createProduct() {
         $categories = Category::all();
 
         return view('admin_add_product', compact('categories'));
     }
 
-    function change_product_page($productId): View {
+    function editProduct($productId): View {
         
         $data = $this->adminService->change_product_page($productId);
 
@@ -79,56 +79,56 @@ class AdminController extends Controller
         return view('admin_change_product', compact('categories', 'product'));
     }
 
-    function change_product($productId, AddProductRequest $request): RedirectResponse {
+    function updateProduct($productId, AddProductRequest $request): RedirectResponse {
         $this->adminService->change_product($request->validated(), $productId);
 
         return redirect()->route('admin_products');
     }
 
-    function delete_product($productId): RedirectResponse {
+    function deleteProduct($productId): RedirectResponse {
         Product::find($productId)->delete();
 
         return redirect()->route('admin_products');
     }
 
-    function add_category(AddCategoryRequest $request): RedirectResponse {
+    function storeCategory(AddCategoryRequest $request): RedirectResponse {
         Category::create($request->validated());
 
         return redirect()->route('admin_categories');
     }
 
-    function update_category_page($CategoryId): View {
+    function editCategory($CategoryId): View {
         $category = Category::find($CategoryId);
 
         return view('admin_update_category', compact('category'));
     }
 
-    function update_category($CategoryId, AddCategoryRequest $request): RedirectResponse {
+    function updateCategory($CategoryId, AddCategoryRequest $request): RedirectResponse {
         Category::find($CategoryId)->update($request->validated());
         // мне лень писать сервис 8==Э
 
         return redirect()->route('admin_categories');
     }
 
-    function delete_category($CategoryId): RedirectResponse {
+    function deleteCategory($CategoryId): RedirectResponse {
         Category::find($CategoryId)->delete();
 
         return redirect()->route('admin_categories');
     }
 
-    function delete_user($userId) {
+    function deleteUser($userId) {
         User::find($userId)->delete();
 
         return redirect()->route('admin_users');
     }
 
-    function add_admin(AddAdminRequest $request) {
+    function promoteUserToAdmin(AddAdminRequest $request) {
         $this->adminService->update_users($request->validated(), 'admin');
 
         return redirect()->route('admin_admins');
     }
 
-    function change_to_user($AdminId): RedirectResponse {
+    function demoteAdminToUser($AdminId): RedirectResponse {
         User::find($AdminId)->update(['role' => 'user']);
 
         return redirect()->route('admin_admins');
