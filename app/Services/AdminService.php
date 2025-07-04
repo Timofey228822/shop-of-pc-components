@@ -39,44 +39,49 @@ class AdminService
         return $allCategories;
     }
 
-    function add_product(array $data): void {
-        $name = $data['name'];
-        $category = Category::where('id',$data['category'])->first()->name;
-        $price = $data['price'];
-        $description = $data['description'];
+    function add_product(array $data): void { /// переименовать метод в addProduct
 
-        if (Product::where('name', $name)->first()) {
-            throw new \Exception('Такой продукт уже есть');
-        }
+        // $name = $data['name'];
+        // //$category = Category::where('id',$data['category'])->first()->name;
+        // $price = $data['price'];
+        // $description = $data['description'];
 
-        Product::create([
-            'name' => $name,
-            'price' => $price,
-            'description' => $description
-        ]);
+        /// TODO валидации товара не надо
+        // if (Product::where('name', $name)->first()) {
+        //     throw new \Exception('Такой продукт уже есть');
+        // }
 
-        $product = Product::where('name', $name)->first();
-        $category_id = Category::where('name', $category)->first();
+        $product = Product::create($data);
 
-        $product->categories()->attach([$category_id]);
+        // $product = Product::where('name', $name)->first();
+        // $category_id = Category::where('name', $category)->first();
+
+        $product->categories()->attach([$data['category']]);
 
     }
 
-    function change_product_page(int $productId): array {
+    function change_product_page(int $productId): Product
+    {
         
-        $product = Product::where('id', $productId)->first();
+        $product = Product::where('id', $productId)->with(['categories'])->firstOrFail();
 
-        $categories = Category::all();
+        print_r($product->toArray());
 
-        $categories_massive = [[$product->categories->pluck('id')->toArray()[0], $product->categories->pluck('name')->toArray()[0]]];
+        return $product;
+        
+        //// TODO сделать выборку всех категорий глобально для всех вью
 
-        foreach ($categories as $category) {
-            if (!in_array([$category->id, $category->name], $categories_massive)) {
-                array_push($categories_massive, [$category->id, $category->name]);
-            }
-        }
+        // $categories = Category::all();
 
-        return [$product, $categories_massive];
+        // $categories_massive = [[$product->categories->pluck('id')->toArray()[0], $product->categories->pluck('name')->toArray()[0]]];
+
+        // foreach ($categories as $category) {
+        //     if (!in_array([$category->id, $category->name], $categories_massive)) {
+        //         array_push($categories_massive, [$category->id, $category->name]);
+        //     }
+        // }
+
+        // return [$product, $categories_massive];
     }
 
     function change_product(array $data, $productId): void {

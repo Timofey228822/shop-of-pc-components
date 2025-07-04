@@ -20,7 +20,7 @@ class AddProductRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'category' => 'string|required',
+            'category' => 'string|required', // Todo валидация категории + передаем id категории
             'price' => 'int|required',
             'description' => 'string|required',
         ];
