@@ -26,7 +26,7 @@ class AdminController extends Controller
     }
 
     function storeProduct(AddProductRequest $request) {
-        $this->adminService->add_product($request->validated());
+        $this->adminService->addProduct($request->validated());
 
         return redirect()->route('admin');
     }
@@ -63,24 +63,15 @@ class AdminController extends Controller
         return view('admin_admin', compact('data'));
     }
 
-    function createProduct() {
-        $categories = Category::all();
-
-        return view('admin_add_product', compact('categories'));
-    }
-
     function editProduct($productId): View {
         
-        $data = $this->adminService->change_product_page($productId);
+        $product = $this->adminService->getProductWithCategory($productId);
 
-        $categories = $data[1];
-        $product = $data[0];
-
-        return view('admin_change_product', compact('categories', 'product'));
+        return view('admin_change_product', compact('product'));
     }
 
     function updateProduct($productId, AddProductRequest $request): RedirectResponse {
-        $this->adminService->change_product($request->validated(), $productId);
+        $this->adminService->updateProduct($request->validated(), $productId);
 
         return redirect()->route('admin_products');
     }
@@ -123,7 +114,7 @@ class AdminController extends Controller
     }
 
     function promoteUserToAdmin(AddAdminRequest $request) {
-        $this->adminService->update_users($request->validated(), 'admin');
+        $this->adminService->updateUser($request->validated(), 'admin');
 
         return redirect()->route('admin_admins');
     }

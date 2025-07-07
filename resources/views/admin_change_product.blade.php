@@ -45,9 +45,9 @@
         </div>
         <div class="form-group">
             <label>Категория</label>
-            <select name="category" class="form-control" required>
+            <select name="category_id" class="form-control" required>
                 @foreach($categories as $category)
-                <option value="{{ $category[0] }}">{{ $category[1] }}</option>
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>

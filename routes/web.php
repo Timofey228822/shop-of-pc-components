@@ -30,7 +30,9 @@ Route::get('/admin/products', [AdminController::class, 'indexProducts'])->name('
 Route::get('/admin/categories', [AdminController::class, 'indexCategories'])->name('admin_categories');
 Route::get('/admin/users', [AdminController::class, 'indexUsers'])->name('admin_users');
 Route::get('/admin/admins', [AdminController::class, 'indexAdmins'])->name('admin_admins');
-Route::get('/admin/products/add_product', [AdminController::class, 'createProduct'])->name('add_product_page');
+Route::get('/admin/products/add_product', function() {
+    return view('admin_add_product');
+})->name('add_product_page');
 Route::get('/admin/changeProduct/productId={productId}', [AdminController::class, 'editProduct'])->name('change_product_page');
 Route::put('/admin/changeProduct/productId={productId}/change', [AdminController::class, 'updateProduct'])->name('change_product');
 Route::delete('/admin/products/delete/productId={productId}', [AdminController::class, 'deleteProduct'])->name('delete_product');

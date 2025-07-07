@@ -10,7 +10,7 @@ class AddProductRequest extends FormRequest
     {
         $attributes = parent::attributes();
         $attributes['name'] = 'Имя';
-        $attributes['category'] = 'Кат';
+        $attributes['category_id'] = 'Кат';
         $attributes['price'] = 'Прайс';
         $attributes['description'] = 'Деск';
         return $attributes;
@@ -20,7 +20,7 @@ class AddProductRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'category' => 'string|required', // Todo валидация категории + передаем id категории
+            'category_id' => 'required|exists:categories,id', // Todo валидация категории + передаем id категории
             'price' => 'int|required',
             'description' => 'string|required',
         ];

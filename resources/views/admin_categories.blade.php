@@ -28,16 +28,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($data as $category)
+                        @foreach($categories as $category)
                             <tr>
-                                <td>{{ $category[0] }}</td>
-                                <td>{{ $category[1] }}</td>
+                                <td>{{ $category->name }}</td>
+                                <td>{{ $category->id }}</td>
                                 <td>
-                                    <form method="GET" action="{{ route('update_category_page', $category[0]) }}">
+                                    <form method="GET" action="{{ route('update_category_page', $category->id) }}">
                                         <button class="btn btn-primary">Редактировать</button>
                                     </form>
                                     
-                                    <form method="POST" action="{{ route('delete_category', $category[0]) }}">
+                                    <form method="POST" action="{{ route('delete_category', $category->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger">Удалить</button>
