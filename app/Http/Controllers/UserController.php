@@ -6,6 +6,8 @@ use Illuminate\Contracts\View\View;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserDataRequest;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\Cartitem;
 use Illuminate\Support\Facades\Session;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +18,7 @@ class UserController extends Controller
         protected UserService $userService
     ) {}
 
-    function index(): View
+    function index(): View|RedirectResponse
     {
         if (Session::get('gay')) {
             return Redirect()->route('dashboard');
@@ -28,12 +30,9 @@ class UserController extends Controller
     function dashboard(): View
     {
 
-        if (Session::get('gay')) {
-            $data = User::where('id', Session::get('gay'))->first();
-            return view('dashboard', compact('data'));
-        }
+        $data = $this->userService->showDashboard();
 
-        return view('dashboard');
+        return view('dashboard', compact('data'));
     }
     function create_user(CreateUserRequest $request): RedirectResponse
     {

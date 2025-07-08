@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\CartService;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
@@ -11,7 +12,16 @@ class CartController extends Controller
         protected CartService $cartService
     ) {}
 
-    function add_to_cart($name) {
-        $this->cartService->add_item($name);
+    function updateCartItems($productId) {
+        $this->cartService->addItemToCart($productId);
+
+        return redirect()->route('shop');
+    }
+
+    function deleteCartItem($productId) {
+
+    $product = CartItem::where('product_id', $productId)->first()->delete();
+
+    return redirect()->route('dashboard');
     }
 }

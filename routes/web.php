@@ -20,9 +20,9 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 Route::put('/update_data', [UserController::class, 'update_data'])->name('update');
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('/shop/category_id={idForCategory}', [ShopController::class, 'show_product']);
-Route::get('/product/productName={nameForProduct}', [ShopController::class, 'show_product_info']);
+Route::get('/product/productName={nameForProduct}', [ShopController::class, 'show_product_info'])->name('product');
 Route::get('/dashboard/exit', [UserController::class, 'exit'])->name('exit');
-Route::get('/product/productName={nameForProduct}/add_to_cart', [CartController::class, 'add_to_cart'])->name('add_to_cart');
+
 Route::get('/admin', [AdminController::class, 'indexAdmin'])->name('admin');
 Route::post('/admin/products/add_product', [AdminController::class, 'storeProduct'])->name('add_product');
 Route::get('/admin/dashboard', [AdminController::class, 'indexDashboard'])->name('admin_dashboard');
@@ -49,3 +49,5 @@ Route::get('/admin/admin/addAdmin', function () {
 })->name('add_admin_page');
 Route::put('/admin/admin/addAdmin/add', [AdminController::class, 'promoteUserToAdmin'])->name('add_admin');
 Route::get('/admin/admin/changeAdmin/adminId={AdminId}', [AdminController::class, 'demoteAdminToUser'])->name('change_to_user');
+Route::get('/product/productId={productId}', [CartController::class, 'updateCartItems'])->name('add_to_cart');
+Route::get('/dashboard/productId={productId}', [CartController::class, 'deleteCartItem'])->name('delete_product_from_cart');

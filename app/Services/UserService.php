@@ -4,6 +4,9 @@ namespace App\Services;
 
 use Illuminate\Contracts\View\View;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -20,22 +23,28 @@ class UserService
         }
 
         if ($email == 'shlatim@yandex.ru' and $name == 'Nigger') {
-            User::create([
+            $admin = User::create([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
                 'role' => 'admin',
             ]);
+
+            $admin->cart()->updateOrCreate(['user_id' => $admin->id]);
         }
 
         else {
-            User::create([
+            $user = User::create([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
                 'role' => 'user',
             ]);
+
+            $user->cart()->updateOrCreate(['user_id' => $user->id]);
         }
+
+        
         
     }
 
@@ -51,7 +60,7 @@ class UserService
             throw new \Exception('Такого чела нет');
         }
 
-        if (!Hash::check($password, $user->password)) {
+        if (!Hash::check($password, (string)$user->password)) {
             throw new \Exception('Неверный пароль');
         }
 
@@ -100,6 +109,26 @@ class UserService
     {
         if (Session::get('gay')) {
             Session::forget('gay');
+        }
+    }
+
+    function showDashboard() {
+        if (Session::get('gay')) {
+            $user = User::where('id', Session::get('gay'))->first();
+
+            $cartId = Cart::where('user_id', $user->id)->first()->id;
+            $cartItemsIds = Cartitem::where('cart_id', $cartId)->get();
+
+            $cartItems = [];
+            $price = 0;
+
+            foreach($cartItemsIds as $productId) {
+                $cartItems[] = Product::find($productId->product_id);
+                $price = $price + Product::find($productId->product_id)->price;
+            }
+
+            return [$user, $cartItems, $price];
+
         }
     }
 }

@@ -26,15 +26,15 @@
                 @method('PUT')
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">ФИО</label>
-                    <input name="name" type="text" value="{{ $data->name ?? 'guest' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
+                    <input name="name" type="text" value="{{ $data[0]->name ?? 'guest' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Email</label>
-                    <input name="email" type="email" value="{{ $data->email ?? 'guest' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
+                    <input name="email" type="email" value="{{ $data[0]->email ?? 'guest' }}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Телефон</label>
-                    <input type="tel" value="{{ $data->phone ?? '' }}" name="phone" pattern="^(\+?\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{2}[\s-]?\d{2}$" title="Формат: +7 XXX XXX XX XX или 8XXX..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
+                    <input type="tel" value="{{ $data[0]->phone ?? '' }}" name="phone" pattern="^(\+?\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{2}[\s-]?\d{2}$" title="Формат: +7 XXX XXX XX XX или 8XXX..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px;">
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                 
@@ -48,26 +48,22 @@
         <div id="cart" class="tab-content">
             <h2>Корзина</h2>
             <div id="cart-items">
+                @foreach ($data[1] as $product)
                 <div class="cart-item">
                     <div>
-                        <div class="product-title">Смартфон XYZ Pro</div>
-                        <div class="product-price">32 990 ₽</div>
+                        <div class="product-title">{{ $product->name }}</div>
+                        <div class="product-price">{{ $product->price }}</div>
                     </div>
                     <div>
-                        <button class="btn btn-danger">Удалить</button>
+                        <form method="GET" action="{{ route('delete_product_from_cart', $product->id) }}">
+                            <button class="btn btn-danger">Удалить</button>
+                        </form>
                     </div>
                 </div>
-                <div class="cart-item">
-                    <div>
-                        <div class="product-title">Наушники Premium Sound</div>
-                        <div class="product-price">7 490 ₽</div>
-                    </div>
-                    <div>
-                        <button class="btn btn-danger">Удалить</button>
-                    </div>
-                </div>
+                @endforeach
+
                 <div class="cart-total">
-                    Итого: 40 480 ₽
+                    Итого: {{ $data[2] ?? 'зарегестрируйтесь' }} ₽
                 </div>
             </div>
             <button class="btn btn-primary" style="margin-top: 20px; width: 100%; padding: 12px;">Оформить заказ</button>
