@@ -20,8 +20,8 @@ class CartController extends Controller
 
     function deleteCartItem($productId) {
 
-    $product = CartItem::where('product_id', $productId)->first()->delete();
+        $product = CartItem::where('product_id', $productId)->first()->delete();
 
-    return redirect()->route('dashboard');
+        return redirect()->route('dashboard');
     }
 }
