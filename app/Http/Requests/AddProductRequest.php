@@ -13,6 +13,7 @@ class AddProductRequest extends FormRequest
         $attributes['category_id'] = 'Кат';
         $attributes['price'] = 'Прайс';
         $attributes['description'] = 'Деск';
+        $attributes['image'] = 'имаг';
         return $attributes;
     }
 
@@ -20,9 +21,10 @@ class AddProductRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'category_id' => 'required|exists:categories,id', // Todo валидация категории + передаем id категории
+            'category_id' => 'required|exists:categories,id', 
             'price' => 'int|required',
             'description' => 'string|required',
+            'image' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
         ];
     }
 }

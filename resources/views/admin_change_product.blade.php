@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <form method="POST" action="{{ route('change_product', $product->id) }}">
+    <form method="POST" action="{{ route('change_product', $product->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -51,5 +51,8 @@
                 @endforeach
             </select>
         </div>
+
+        <input type="file" name="image">
+
         <button type="submit" class="btn-btn-submit" style="--primary-color: #4361ee">Обновить</button>
     </form>

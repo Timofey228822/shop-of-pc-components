@@ -48,26 +48,36 @@
         <div id="cart" class="tab-content">
             <h2>Корзина</h2>
             <div id="cart-items">
-                @foreach ($data[1] as $product)
-                <div class="cart-item">
-                    <div>
-                        <div class="product-title">{{ $product->name }}</div>
-                        <div class="product-price">{{ $product->price }}</div>
+                @isset($data[1])
+                    @foreach ($data[1] as $product)
+                        <div class="cart-item">
+                            <div>
+                                <div class="product-title">{{ $product->name }}</div>
+                                <div class="product-price">{{ $product->price }}</div>
+                            </div>
+                            <div>
+                                <form method="GET" action="{{ route('delete_product_from_cart', $product->id) }}">
+                                    <button class="btn btn-danger">Удалить</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+    
+    
+                    <div class="cart-total">
+                        Итого: {{ $data[2]}} ₽
                     </div>
-                    <div>
-                        <form method="GET" action="{{ route('delete_product_from_cart', $product->id) }}">
-                            <button class="btn btn-danger">Удалить</button>
-                        </form>
-                    </div>
-                </div>
-                @endforeach
 
-                <div class="cart-total">
-                    Итого: {{ $data[2] ?? 'зарегестрируйтесь' }} ₽
+            
+                        <button class="btn btn-primary" style="margin-top: 20px; width: 100%; padding: 12px;">Оформить заказ</button>
+                    
+                @else
+                    <a>зарегестрируйся</a>
+                @endisset
                 </div>
-            </div>
-            <button class="btn btn-primary" style="margin-top: 20px; width: 100%; padding: 12px;">Оформить заказ</button>
         </div>
+
+
 
         <div id="purchases" class="tab-content">
             <h2>История покупок</h2>

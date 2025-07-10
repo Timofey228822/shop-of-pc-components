@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 
 use Illuminate\Http\Request;
 
@@ -17,22 +18,18 @@ class ShopController extends Controller
     }
     function shop() {
 
-        $categories = Category::all();
-
         $products = Product::paginate(15);
 
-        return view('shop', compact('categories', 'products'));
+        return view('shop', compact( 'products'));
     }
 
     function show_product($category_id) {
-
-        $categories = Category::all();
 
         $category = Category::find($category_id);
         
         $products = $category->products()->paginate(15);
 
-        return view('shop', compact('products', 'categories'));
+        return view('shop', compact('products'));
     }
 
 }

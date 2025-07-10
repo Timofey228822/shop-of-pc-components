@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <form method="POST" action="{{ route('add_product') }}">
+    <form method="POST" action="{{ route('add_product') }}" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label>Название товара</label>
@@ -44,11 +44,14 @@
         </div>
         <div class="form-group">
             <label>Категория</label>
-            <select name="category" class="form-control" required>
+            <select name="category_id" class="form-control" required>
                 @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
+
+        <input type="file" name="image">
+
         <button type="submit" class="btn-btn-submit" style="--primary-color: #4361ee">Создать</button>
     </form>

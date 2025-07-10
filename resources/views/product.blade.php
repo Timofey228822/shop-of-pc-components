@@ -8,7 +8,7 @@
     <div class="product-page">
         <div class="product-header">
             <div class="product-gallery">
-                <img src="https://via.placeholder.com/600x400" alt="Основное изображение товара" class="main-image">
+                <img src="{{ asset('storage/'.$product->image()->where('type', 'main')->first()->path) }}" alt="Основное изображение товара" class="main-image">
             </div>
             
             <div class="product-info">

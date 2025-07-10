@@ -3,10 +3,12 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Session;
+
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -43,6 +45,65 @@ class AdminService
 
         $product = Product::create($data);
 
+        if ($data['image']) {
+            $width = 550;
+            $height = 250;
+
+            $img = $data['image'];
+            $path = $data['image']->store('products', 'public');
+            $thumbnailPath = 'thumbs/' . pathinfo($path, PATHINFO_BASENAME);
+            
+            $imageInfo = getimagesize($data['image']->getRealPath());
+
+            switch ($imageInfo['mime']) {
+                case 'image/jpeg':
+                    $sourceImage = imagecreatefromjpeg($img->getRealPath());
+                    break;
+                case 'image/png':
+                    $sourceImage = imagecreatefrompng($img->getRealPath());
+                    break;
+                case 'image/webp':
+                    $sourceImage = imagecreatefromwebp($img->getRealPath());
+                    break;
+                default:
+                    throw new \Exception('Такие картинки создавать нельзя');
+            }
+
+            $originalWidth = imagesx($sourceImage);
+            $originalHeight = imagesy($sourceImage);
+
+            $ratio = min($width / $originalWidth, $height / $originalHeight);
+
+            $newWidth = (int)($originalWidth * $ratio);
+            $newHeight = (int)($originalHeight * $ratio);
+
+            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+
+            imagecopyresampled(
+                $resizedImage, $sourceImage,
+                0, 0, 0, 0,
+                $newWidth, $newHeight,
+                $originalWidth, $originalHeight
+            );
+
+            Storage::disk('public')->path($thumbnailPath);
+
+            imagedestroy($sourceImage);
+            imagedestroy($resizedImage);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'type' => 'thumbnail',
+                'path' => $thumbnailPath,
+            ]);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'type' => 'main',
+                'path' => $path,
+            ]);
+        }
+        
         $product->categories()->attach([$data['category']]);
 
     }
@@ -56,20 +117,81 @@ class AdminService
     }
 
     function updateProduct(array $data, $productId): void {
-        $name = $data['name'];
-        $category_id = $data['category_id'];
-        $price = $data['price'];
-        $description = $data['description'];
 
-        $update = Product::where('id', $productId)->first();
+        $product = Product::where('id', $productId)->first();
 
-        $update->update([
-            'name' => $name,
-            'price' => $price,
-            'description' => $description,
-        ]);
+        if ($data['image']) {
+            ProductImage::where('product_id', $product->id)->delete();
 
-        $update->categories()->sync($category_id);
+            $width = 550;
+            $height = 230;
+
+            $img = $data['image'];
+            $path = $data['image']->store('products', 'public');
+            $thumbnailPath = 'thumbs/' . pathinfo($path, PATHINFO_BASENAME);
+            
+            $imageInfo = getimagesize($data['image']->getRealPath());
+
+            switch ($imageInfo['mime']) {
+                case 'image/jpeg':
+                    $sourceImage = imagecreatefromjpeg($img->getRealPath());
+                    break;
+                case 'image/png':
+                    $sourceImage = imagecreatefrompng($img->getRealPath());
+                    break;
+                case 'image/webp':
+                    $sourceImage = imagecreatefromwebp($img->getRealPath());
+                    break;
+                default:
+                    throw new \Exception('Такие картинки создавать нельзя');
+            }
+
+            $originalWidth = imagesx($sourceImage);
+            $originalHeight = imagesy($sourceImage);
+
+            $ratio = min($width / $originalWidth, $height / $originalHeight);
+
+            $newWidth = (int)($originalWidth * $ratio);
+            $newHeight = (int)($originalHeight * $ratio);
+
+            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+
+            imagecopyresampled(
+                $resizedImage, $sourceImage,
+                0, 0, 0, 0,
+                $newWidth, $newHeight,
+                $originalWidth, $originalHeight
+            );
+
+            imagedestroy($sourceImage);
+            imagedestroy($resizedImage);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'type' => 'thumbnail',
+                'path' => $thumbnailPath,
+            ]);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'type' => 'main',
+                'path' => $path,
+            ]);
+
+            $fullPath = Storage::disk('public')->path($thumbnailPath);
+
+            match($img->getMimeType()) {
+                'image/jpeg' => imagejpeg($resizedImage, $fullPath, 85),
+                'image/png' => imagepng($resizedImage, $fullPath, 6),
+                'image/webp' => imagewebp($resizedImage, $fullPath, 6)
+            };
+        }
+
+        $path = $data['image']->store('products', 'public');
+
+        $product->update([$data]);
+
+        $product->categories()->sync($data['category_id']);
     }
 
     function updateUser(array $data, string $role): void {
