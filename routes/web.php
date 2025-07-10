@@ -51,3 +51,4 @@ Route::put('/admin/admin/addAdmin/add', [AdminController::class, 'promoteUserToA
 Route::get('/admin/admin/changeAdmin/adminId={AdminId}', [AdminController::class, 'demoteAdminToUser'])->name('change_to_user');
 Route::get('/product/productId={productId}', [CartController::class, 'updateCartItems'])->name('add_to_cart');
 Route::get('/dashboard/productId={productId}', [CartController::class, 'deleteCartItem'])->name('delete_product_from_cart');
+Route::get('/dashboard/makeOrder', [CartController::class, 'makeOrder'])->name('make_order');

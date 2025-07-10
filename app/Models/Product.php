@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function orderUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'product_orders');
+    }
 }

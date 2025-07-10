@@ -68,8 +68,10 @@
                         Итого: {{ $data[2]}} ₽
                     </div>
 
-            
+                    <form method="GET" action="{{ route('make_order') }}">
                         <button class="btn btn-primary" style="margin-top: 20px; width: 100%; padding: 12px;">Оформить заказ</button>
+                    </form>
+                        
                     
                 @else
                     <a>зарегестрируйся</a>
@@ -82,36 +84,15 @@
         <div id="purchases" class="tab-content">
             <h2>История покупок</h2>
             <div id="purchased-items">
-                <div class="purchased-item">
-                    <div>
-                        <div class="product-title">Ноутбук UltraBook 15</div>
-                        <div>Количество: 1</div>
-                        <div class="product-price">64 990 ₽</div>
+                @foreach ($data[3] as $product)
+                    <div class="purchased-item">
+                        <div>
+                            <div class="product-title">{{ $product->name }}</div>
+                            <div class="product-price">{{ $product->price }}</div>
+                        </div>
                     </div>
-                    <div class="purchase-date">
-                        15.05.2023
-                    </div>
-                </div>
-                <div class="purchased-item">
-                    <div>
-                        <div class="product-title">Беспроводная мышь</div>
-                        <div>Количество: 2</div>
-                        <div class="product-price">1 990 ₽ (за шт)</div>
-                    </div>
-                    <div class="purchase-date">
-                        02.04.2023
-                    </div>
-                </div>
-                <div class="purchased-item">
-                    <div>
-                        <div class="product-title">Чехол для смартфона</div>
-                        <div>Количество: 1</div>
-                        <div class="product-price">890 ₽</div>
-                    </div>
-                    <div class="purchase-date">
-                        12.03.2023
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
         <div id="shop" class="tab-content">

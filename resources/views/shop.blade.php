@@ -45,7 +45,9 @@
                 <a href="/product/productName={{ $product['name'] }}">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="{{ asset('storage/'.$product->image()->first()->path)}}">
+                            @isset($product->image()->first()->path)
+                                <img src="{{ asset('storage/'.$product->image()->first()->path)}}">
+                            @endisset
                         </div>
                         <div class="product-info">
                             <h3 class="product-title">{{ $product['name'] }}</h3>

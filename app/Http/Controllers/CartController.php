@@ -24,4 +24,11 @@ class CartController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    function makeOrder() {
+
+        $this->cartService->makeOrder();
+
+        return redirect()->route('dashboard');
+    }
 }

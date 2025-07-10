@@ -8,7 +8,10 @@
     <div class="product-page">
         <div class="product-header">
             <div class="product-gallery">
-                <img src="{{ asset('storage/'.$product->image()->where('type', 'main')->first()->path) }}" alt="Основное изображение товара" class="main-image">
+                @isset($product->image()->where('type', 'main')->first()->path)
+                    <img src="{{ asset('storage/'.$product->image()->where('type', 'main')->first()->path) }}" alt="Основное изображение товара" class="main-image">
+                @endisset
+
             </div>
             
             <div class="product-info">

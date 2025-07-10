@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('role');
+            $table->integer('income')->default(0);
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
         });

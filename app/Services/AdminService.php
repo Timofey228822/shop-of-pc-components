@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductOrder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -22,9 +23,16 @@ class AdminService
      */
     public function getUsersAndProductsCount(): array
     {
+        $glodal_income = User::sum('income');
+
+        $latest_orders = ProductOrder::paginate(15);
+
         return [
             User::count(),
-            Product::count()
+            Product::count(),
+            ProductOrder::count(),
+            $glodal_income,
+            $latest_orders
         ];
     }
 

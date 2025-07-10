@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\ProductOrder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -127,7 +128,9 @@ class UserService
                 $price = $price + Product::find($productId->product_id)->price;
             }
 
-            return [$user, $cartItems, $price];
+            $products = $user->orderProducts()->get();
+
+            return [$user, $cartItems, $price, $products];
 
         }
     }

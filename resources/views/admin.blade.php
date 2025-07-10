@@ -17,13 +17,14 @@
             </div>
         </div>
         
+
             <div class="stats">
                 <div class="stat-card">
-                    <h3>в разработке</h3>
+                    <h3>{{ $data[2] }}</h3>
                     <p>Всего заказов</p>
                 </div>
                 <div class="stat-card">
-                    <h3>в разработке</h3>
+                    <h3>{{ $data[3] }}</h3>
                     <p>Общий доход</p>
                 </div>
                 <div class="stat-card">
@@ -43,36 +44,24 @@
                         <tr>
                             <th>ID</th>
                             <th>Клиент</th>
-                            <th>Дата</th>
+                            <th>Покупка</th>
                             <th>Сумма</th>
-                            <th>Статус</th>
-                            <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#1245</td>
-                            <td>Иван Иванов</td>
-                            <td>12.05.2023</td>
-                            <td>₽2,450</td>
-                            <td><span style="color: var(--success)">Завершен</span></td>
-                            <td>
-                                <button class="btn btn-primary">Просмотр</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1244</td>
-                            <td>Петр Петров</td>
-                            <td>11.05.2023</td>
-                            <td>₽1,780</td>
-                            <td><span style="color: var(--warning)">В обработке</span></td>
-                            <td>
-                                <button class="btn btn-primary">Просмотр</button>
-                            </td>
-                        </tr>
+                        @foreach ($data[4] as $order)
+                            <tr>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ App\Models\User::where('id',$order->user_id)->first()->name }}</td>
+                                <td>{{ App\Models\Product::where('id',$order->product_id)->first()->name }}</td>
+                                <td>{{ App\Models\Product::where('id',$order->product_id)->first()->price }}</td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
+
     </div>
 @endsection
 
