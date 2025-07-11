@@ -13,6 +13,7 @@ class CartController extends Controller
     ) {}
 
     function updateCartItems($productId) {
+        
         $this->cartService->addItemToCart($productId);
 
         return redirect()->route('shop');
@@ -20,7 +21,7 @@ class CartController extends Controller
 
     function deleteCartItem($productId) {
 
-        $product = CartItem::where('product_id', $productId)->first()->delete();
+        CartItem::where('product_id', $productId)->firstOrFail()->delete();
 
         return redirect()->route('dashboard');
     }

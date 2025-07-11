@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = ['name', 'description', 'price', 'image_url'];
     
+    ////// TODO
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'product_category')->withPivot(['product_id', 'category_id']);

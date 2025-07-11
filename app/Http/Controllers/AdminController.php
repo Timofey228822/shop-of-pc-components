@@ -71,13 +71,15 @@ class AdminController extends Controller
     }
 
     function updateProduct($productId, AddProductRequest $request): RedirectResponse {
+
         $this->adminService->updateProduct($request->validated(), $productId);
 
         return redirect()->route('admin_products');
     }
 
     function deleteProduct($productId): RedirectResponse {
-        Product::find($productId)->delete();
+
+        Product::findOrFail($productId)->delete();
 
         return redirect()->route('admin_products');
     }
@@ -95,7 +97,8 @@ class AdminController extends Controller
     }
 
     function updateCategory($CategoryId, AddCategoryRequest $request): RedirectResponse {
-        Category::find($CategoryId)->update($request->validated());
+
+        Category::findOrFail($CategoryId)->update($request->validated());
         // мне лень писать сервис 8==Э
 
         return redirect()->route('admin_categories');
@@ -114,6 +117,7 @@ class AdminController extends Controller
     }
 
     function promoteUserToAdmin(AddAdminRequest $request) {
+        
         $this->adminService->updateUser($request->validated(), 'admin');
 
         return redirect()->route('admin_admins');

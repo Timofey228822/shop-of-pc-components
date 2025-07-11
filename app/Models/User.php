@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'role',
-        'income'
+        'income' //// TODO
     ];
 
     protected $table = 'user';
