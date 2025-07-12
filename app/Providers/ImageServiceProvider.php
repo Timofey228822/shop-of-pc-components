@@ -2,16 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\ProductImage;
+use App\Services\ImageService;
 use Illuminate\Support\ServiceProvider;
 
-class CategoryServiceProvider extends ServiceProvider
+class ImageServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ImageService::class);
     }
 
     /**
@@ -19,6 +21,6 @@ class CategoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->share('categories', \App\Models\Category::paginate(50));
+        //
     }
 }

@@ -15,6 +15,10 @@ use Throwable;
 class AdminService
 {
 
+    public function __construct(
+        protected ImageService $imageService
+    ) {}
+
     /**
      * Collects and returns the count of users and products.
      *
@@ -37,21 +41,6 @@ class AdminService
         ];
     }
 
-    ///// TODO
-    public function getAllCategories(): array
-    {
-        $allCategories = [];
-
-        $categories = Category::all();
-
-        foreach ($categories as $category) {
-            array_push($allCategories, [$category->id, $category->name]);
-        }
-
-        return $allCategories;
-    }
-
-
     function addProduct(array $data): void
     {
 
@@ -61,75 +50,13 @@ class AdminService
 
             $product = Product::create($data);
 
-            //// вынести  в отдельный сервис где будет все с картинками
+
             if ($data['image']) {
-                $width = 550;
-                $height = 250;
-
-                $img = $data['image'];
-                $path = $data['image']->store('products', 'public');
-                $thumbnailPath = 'thumbs/' . pathinfo($path, PATHINFO_BASENAME);
-
-                $imageInfo = getimagesize($data['image']->getRealPath());
-
-                switch ($imageInfo['mime']) {
-                    case 'image/jpeg':
-                        $sourceImage = imagecreatefromjpeg($img->getRealPath());
-                        break;
-                    case 'image/png':
-                        $sourceImage = imagecreatefrompng($img->getRealPath());
-                        break;
-                    case 'image/webp':
-                        $sourceImage = imagecreatefromwebp($img->getRealPath());
-                        break;
-                    default:
-                        throw new \Exception('Такие картинки создавать нельзя');
-                }
-
-                $originalWidth = imagesx($sourceImage);
-                $originalHeight = imagesy($sourceImage);
-
-                $ratio = min($width / $originalWidth, $height / $originalHeight);
-
-                $newWidth = (int)($originalWidth * $ratio);
-                $newHeight = (int)($originalHeight * $ratio);
-
-                $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-
-                imagecopyresampled(
-                    $resizedImage,
-                    $sourceImage,
-                    0,
-                    0,
-                    0,
-                    0,
-                    $newWidth,
-                    $newHeight,
-                    $originalWidth,
-                    $originalHeight
-                );
-
-                Storage::disk('public')->path($thumbnailPath);
-
-                imagedestroy($sourceImage);
-                imagedestroy($resizedImage);
-
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'type' => 'thumbnail',
-                    'path' => $thumbnailPath,
-                ]);
-
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'type' => 'main',
-                    'path' => $path,
-                ]);
+                $this->imageService->createThumbnailAndImage($data['image'], $product);
             }
 
-            $product->categories()->attach([$data['category']]);
-
             DB::commit();
+            
         } catch (Throwable $th) {
             DB::rollback();
             Log::error(
@@ -145,7 +72,7 @@ class AdminService
 
     function getProductWithCategory(int $productId): Product
     {
-        return Product::where('id', $productId)->with(['categories'])->firstOrFail();
+        return Product::where('id', $productId)->with(['category'])->firstOrFail();
     }
 
     function updateProduct(array $data, $productId): void
@@ -153,85 +80,32 @@ class AdminService
 
         $product = Product::where('id', $productId)->firstOrFail();
 
-        //// TODO
-        if ($data['image']) {
-            ProductImage::where('product_id', $product->id)->delete();
 
-            $width = 550;
-            $height = 230;
+        try {
+            DB::beginTransaction();
 
-            $img = $data['image'];
-            $path = $data['image']->store('products', 'public');
-            $thumbnailPath = 'thumbs/' . pathinfo($path, PATHINFO_BASENAME);
-
-            $imageInfo = getimagesize($data['image']->getRealPath());
-
-            switch ($imageInfo['mime']) {
-                case 'image/jpeg':
-                    $sourceImage = imagecreatefromjpeg($img->getRealPath());
-                    break;
-                case 'image/png':
-                    $sourceImage = imagecreatefrompng($img->getRealPath());
-                    break;
-                case 'image/webp':
-                    $sourceImage = imagecreatefromwebp($img->getRealPath());
-                    break;
-                default:
-                    throw new \Exception('Такие картинки создавать нельзя');
+            if ($data['image']) {
+                $this->imageService->updateBothImages($data['image'], $product);
             }
 
-            $originalWidth = imagesx($sourceImage);
-            $originalHeight = imagesy($sourceImage);
+            $path = $data['image']->store('products', 'public');
 
-            $ratio = min($width / $originalWidth, $height / $originalHeight);
+            $product->update([$data]);
 
-            $newWidth = (int)($originalWidth * $ratio);
-            $newHeight = (int)($originalHeight * $ratio);
-
-            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-
-            imagecopyresampled(
-                $resizedImage,
-                $sourceImage,
-                0,
-                0,
-                0,
-                0,
-                $newWidth,
-                $newHeight,
-                $originalWidth,
-                $originalHeight
+            DB::commit();
+        } catch (Throwable $th) {
+            DB::rollback();
+            Log::error(
+                'Не удалось создать товар',
+                [
+                    'Exception' => $th->getMessage(),
+                    'data'      => $data,
+                ]
             );
-
-            imagedestroy($sourceImage);
-            imagedestroy($resizedImage);
-
-            ProductImage::create([
-                'product_id' => $product->id,
-                'type' => 'thumbnail',
-                'path' => $thumbnailPath,
-            ]);
-
-            ProductImage::create([
-                'product_id' => $product->id,
-                'type' => 'main',
-                'path' => $path,
-            ]);
-
-            $fullPath = Storage::disk('public')->path($thumbnailPath);
-
-            match ($img->getMimeType()) {
-                'image/jpeg' => imagejpeg($resizedImage, $fullPath, 85),
-                'image/png' => imagepng($resizedImage, $fullPath, 6),
-                'image/webp' => imagewebp($resizedImage, $fullPath, 6)
-            };
+            throw new \Exception('Нельзя обновить изображение');
         }
 
-        $path = $data['image']->store('products', 'public');
 
-        $product->update([$data]);
-
-        $product->categories()->sync($data['category_id']);
     }
 
     /**
@@ -244,9 +118,8 @@ class AdminService
      */
     public function updateUser(array $data, string $role): void
     {
-        // Get the email and name from the data
+        // role это роль, которая передается чтобы присвоить админу или пользователю
         $email = $data['email'];
-        //$username = $data['name'];
 
         // Find the user by email
         $user = User::where('email', $email)->first();

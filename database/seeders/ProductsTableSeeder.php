@@ -18,31 +18,37 @@ class ProductsTableSeeder extends Seeder
                 'name' => 'Материнская плата ASUS ROG Strix',
                 'description' => 'Для процессоров Intel, Socket 1200, чипсет Z490',
                 'price' => 12999,
+                'category_id' => 1
             ],
             [
                 'name' => 'Оперативная память Kingston 16GB',
                 'description' => 'DDR4, 3200MHz, 2x8GB',
                 'price' => 5499,
+                'category_id' => 2
             ],
             [
                 'name' => 'Процессор Intel Core i7-10700K',
                 'description' => '8 ядер, 16 потоков, 3.8 ГГц',
                 'price' => 24999,
+                'category_id' => 3
             ],
             [
                 'name' => 'Видеокарта NVIDIA RTX 3070',
                 'description' => '8GB GDDR6, 5888 ядер',
                 'price' => 59999,
+                'category_id' => 4
             ],
             [
                 'name' => 'Блок питания Cooler Master 750W',
                 'description' => '80+ Gold, модульный',
                 'price' => 7299,
+                'category_id' => 5
             ],
             [
                 'name' => 'Кулер для процессора DeepCool',
                 'description' => 'Тихий, RGB подсветка',
                 'price' => 2999,
+                'category_id' => 6
             ],
             
         ];

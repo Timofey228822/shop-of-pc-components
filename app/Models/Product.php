@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
     protected $table = 'products';
 
-    protected $fillable = ['name', 'description', 'price', 'image_url'];
+    protected $fillable = ['name', 'description', 'price', 'image_url', 'category_id'];
     
     ////// TODO
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class, 'product_category')->withPivot(['product_id', 'category_id']);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function cartItems()

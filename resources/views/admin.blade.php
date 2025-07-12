@@ -20,19 +20,19 @@
 
             <div class="stats">
                 <div class="stat-card">
-                    <h3>{{ $data[2] }}</h3>
+                    <h3>{{ $data['orders'] }}</h3>
                     <p>Всего заказов</p>
                 </div>
                 <div class="stat-card">
-                    <h3>{{ $data[3] }}</h3>
+                    <h3>{{ $data['glodal_income'] }}</h3>
                     <p>Общий доход</p>
                 </div>
                 <div class="stat-card">
-                    <h3>{{ $data[1] }}</h3>
+                    <h3>{{ $data['products'] }}</h3>
                     <p>Товаров</p>
                 </div>
                 <div class="stat-card">
-                    <h3>{{ $data[0] }}</h3>
+                    <h3>{{ $data['users'] }}</h3>
                     <p>Пользователей</p>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data[4] as $order)
+                        @foreach ($data['latest_orders'] as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ App\Models\User::where('id',$order->user_id)->first()->name }}</td>

@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
     protected $table = 'categories';
     protected $fillable = ['name'];
     
-    public function products(): BelongsToMany
+    public function products(): hasMany
     {
-        return $this->belongsToMany(Product::class, 'product_category');
+        return $this->hasMany(Product::class, 'products');
     }
 }

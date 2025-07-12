@@ -26,6 +26,7 @@ class AdminController extends Controller
     }
 
     function storeProduct(AddProductRequest $request) {
+
         $this->adminService->addProduct($request->validated());
 
         return redirect()->route('admin');
@@ -46,9 +47,10 @@ class AdminController extends Controller
     }
 
     function indexCategories() {
-        $data = $this->adminService->getAllCategories();
 
-        return view('admin_categories', compact('data'));
+        $categories = Category::all();
+
+        return view('admin_categories', compact('categories'));
     }
 
     function indexUsers() {

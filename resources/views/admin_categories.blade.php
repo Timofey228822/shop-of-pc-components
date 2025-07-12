@@ -22,8 +22,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Название</th>
+                            <th>ID</th>
                             <th>Действия</th>
                         </tr>
                     </thead>

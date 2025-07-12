@@ -37,7 +37,7 @@
                                 <td>{{ $product->id }}</td>
                                 <td><img src="https://via.placeholder.com/50" alt="Product"></td>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
+                                <td>{{ $product->category()->pluck('name')->implode(', ') }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>
                                     <form method="GET" action="/admin/changeProduct/productId={{ $product->id }}">

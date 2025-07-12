@@ -12,9 +12,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(AdminService::class, function ($app) {
-            return new AdminService();
-        });
+        $this->app->singleton(AdminService::class);
     }
 
     /**

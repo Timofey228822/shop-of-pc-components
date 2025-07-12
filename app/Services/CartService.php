@@ -13,14 +13,15 @@ class CartService
     function addItemToCart($productId): void
     {
 
+        // проверяем гостя
         if (!Session::get('gay')) {
             throw new Exception('вы гость');
         }
 
-        /// TODO firstOrCreate
+        //находим карзину
+        $yourCart = Cart::where('user_id', Session::get('gay'))->firstOrCreate();
 
-        $yourCart = Cart::where('user_id', Session::get('gay'))->firstOrFail();
-
+        //создаем ей вещи
         $yourCart->items()->create(
             [
                 'cart_id' => $yourCart->id,
