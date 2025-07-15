@@ -48,13 +48,14 @@ class AdminController extends Controller
 
     function indexCategories() {
 
-        $categories = Category::all();
+        $categories = Category::all(); ///// TODO
 
         return view('admin_categories', compact('categories'));
     }
 
     function indexUsers() {
-        $data = User::paginate(15)->where('role', 'user');
+
+        $data = User::where('role', 'user')->paginate(15);
 
         return view('admin_users', compact('data'));
     }
@@ -93,7 +94,8 @@ class AdminController extends Controller
     }
 
     function editCategory($CategoryId): View {
-        $category = Category::find($CategoryId);
+
+        $category = Category::findOrFail($CategoryId);
 
         return view('admin_update_category', compact('category'));
     }
@@ -101,19 +103,20 @@ class AdminController extends Controller
     function updateCategory($CategoryId, AddCategoryRequest $request): RedirectResponse {
 
         Category::findOrFail($CategoryId)->update($request->validated());
-        // мне лень писать сервис 8==Э
 
         return redirect()->route('admin_categories');
     }
 
     function deleteCategory($CategoryId): RedirectResponse {
-        Category::find($CategoryId)->delete();
+
+        Category::findOrFail($CategoryId)->delete();
 
         return redirect()->route('admin_categories');
     }
 
     function deleteUser($userId) {
-        User::find($userId)->delete();
+
+        User::findOrFail($userId)->delete();
 
         return redirect()->route('admin_users');
     }
@@ -126,7 +129,8 @@ class AdminController extends Controller
     }
 
     function demoteAdminToUser($AdminId): RedirectResponse {
-        User::find($AdminId)->update(['role' => 'user']);
+
+        User::findOrFail($AdminId)->update(['role' => 'user']);
 
         return redirect()->route('admin_admins');
     }

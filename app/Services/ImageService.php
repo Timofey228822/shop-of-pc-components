@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Cart;
 use App\Models\ProductImage;
-use App\Models\User;
-use App\Models\CartItem;
 use Exception;
-use Illuminate\Support\Facades\Session;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class ImageService
 {
-    function createThumbnailAndImage($img, $product): void {
+    protected const THUMBNAIL_WIDTH = 550;
+    protected const THUMBNAIL_HEIGHT = 250;
+
+    function createThumbnailAndImage($img, $product): void
+    {
         $width = 550;
         $height = 250;
 
@@ -74,14 +74,15 @@ class ImageService
             'type' => 'main',
             'path' => $path,
         ]);
-        
     }
 
-    function updateBothImages($img, $product) {
+    function updateBothImages($img, $product)
+    {
+
         ProductImage::where('product_id', $product->id)->delete();
 
-        $width = 550;
-        $height = 230;
+        $width = self::THUMBNAIL_WIDTH;
+        $height = self::THUMBNAIL_HEIGHT;
 
         $path = $img->store('products', 'public');
         $thumbnailPath = 'thumbs/' . pathinfo($path, PATHINFO_BASENAME);

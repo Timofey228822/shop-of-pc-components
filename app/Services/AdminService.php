@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models\User;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Models\ProductOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +11,6 @@ use Throwable;
 
 class AdminService
 {
-
     public function __construct(
         protected ImageService $imageService
     ) {}
@@ -56,7 +52,6 @@ class AdminService
             }
 
             DB::commit();
-            
         } catch (Throwable $th) {
             DB::rollback();
             Log::error(
@@ -88,7 +83,7 @@ class AdminService
                 $this->imageService->updateBothImages($data['image'], $product);
             }
 
-            $path = $data['image']->store('products', 'public');
+            $data['image']->store('products', 'public');
 
             $product->update([$data]);
 
@@ -104,8 +99,6 @@ class AdminService
             );
             throw new \Exception('Нельзя обновить изображение');
         }
-
-
     }
 
     /**

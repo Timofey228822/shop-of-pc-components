@@ -12,9 +12,8 @@ class CartService
 {
     function addItemToCart($productId): void
     {
-
         // проверяем гостя
-        if (!Session::get('gay')) {
+        if (!Session::get('gay')) { /// TODO gay
             throw new Exception('вы гость');
         }
 

@@ -13,7 +13,7 @@ class ImageServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ImageService::class);
+        // $this->app->singleton(ImageService::class);
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\ProductOrder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -23,6 +22,7 @@ class UserService
             throw new \Exception('Такой чел уже есть');
         }
 
+        //// TODO  хардкод shlatim@yandex.ru
         if ($email == 'shlatim@yandex.ru' and $name == 'Nigger') {
             $admin = User::create([
                 'name' => $name,
@@ -44,8 +44,6 @@ class UserService
 
             $user->cart()->updateOrCreate(['user_id' => $user->id]);
         }
-
-        
         
     }
 
@@ -72,15 +70,14 @@ class UserService
         $userRole = $user->role;
 
         if ($userRole == 'admin') {
-            Session::put('gay', $user->id);
+            Session::put('gay', $user->id); //// TODO
 
             return 'admin';
         }
 
-        Session::put('gay', $user->id);
+        Session::put('gay', $user->id); //// TODO
 
-        return 'dashboard';
-        
+        return 'dashboard';        
     }
 
     function updateData(array $data): View
