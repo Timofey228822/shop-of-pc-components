@@ -13,8 +13,8 @@ class ImageService
 
     function createThumbnailAndImage($img, $product): void
     {
-        $width = 550;
-        $height = 250;
+        $width = self::THUMBNAIL_WIDTH;
+        $height = self::THUMBNAIL_HEIGHT;
 
         $path = $img->store('products', 'public');
 

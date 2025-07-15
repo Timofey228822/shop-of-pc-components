@@ -22,9 +22,7 @@ class ShopController extends Controller
 
     function show_product($category_id)
     {
-        $category = Category::find($category_id);
-
-        $products = $category->products()->paginate(15);
+        $products = Product::where('category_id', $category_id)->paginate(15);
 
         return view('shop', compact('products'));
     }

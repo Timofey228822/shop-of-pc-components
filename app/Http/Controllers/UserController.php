@@ -20,7 +20,7 @@ class UserController extends Controller
 
     function index(): View|RedirectResponse
     {
-        if (Session::get('gay')) {
+        if (Session::get('user_id')) {
             return Redirect()->route('dashboard');
         }
 

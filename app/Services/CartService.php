@@ -13,12 +13,12 @@ class CartService
     function addItemToCart($productId): void
     {
         // проверяем гостя
-        if (!Session::get('gay')) { /// TODO gay
+        if (!Session::get('user_id')) {
             throw new Exception('вы гость');
         }
 
         //находим карзину
-        $yourCart = Cart::where('user_id', Session::get('gay'))->firstOrCreate();
+        $yourCart = Cart::where('user_id', Session::get('user_id'))->firstOrCreate();
 
         //создаем ей вещи
         $yourCart->items()->create(
@@ -32,7 +32,7 @@ class CartService
     function makeOrder(): void
     {
         /// Получаем юзера
-        $user = User::where('id', Session::get('gay'))->first(); /// gay TODO
+        $user = User::where('id', Session::get('user_id'))->first();
 
         /// Получаем его корзину
         $user_cart = $user->cart()->first();
@@ -48,7 +48,7 @@ class CartService
 
         $user->orderProducts()->attach($ids);
 
-        $user->increment('income', $income);
+        $user->update(['income' => $user->income + $income]);
 
         CartItem::where([
             'cart_id' => $user->cart()->first()->id,

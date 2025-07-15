@@ -48,9 +48,7 @@ class AdminController extends Controller
 
     function indexCategories() {
 
-        $categories = Category::all(); ///// TODO
-
-        return view('admin_categories', compact('categories'));
+        return view('admin_categories');
     }
 
     function indexUsers() {

@@ -22,18 +22,6 @@ class UserService
             throw new \Exception('Такой чел уже есть');
         }
 
-        //// TODO  хардкод shlatim@yandex.ru
-        if ($email == 'shlatim@yandex.ru' and $name == 'Nigger') {
-            $admin = User::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => $password,
-                'role' => 'admin',
-            ]);
-
-            $admin->cart()->updateOrCreate(['user_id' => $admin->id]);
-        }
-
         else {
             $user = User::create([
                 'name' => $name,
@@ -70,12 +58,12 @@ class UserService
         $userRole = $user->role;
 
         if ($userRole == 'admin') {
-            Session::put('gay', $user->id); //// TODO
+            Session::put('user_id', $user->id); 
 
             return 'admin';
         }
 
-        Session::put('gay', $user->id); //// TODO
+        Session::put('user_id', $user->id); 
 
         return 'dashboard';        
     }
@@ -86,7 +74,7 @@ class UserService
         $name = $data['name'];
         $phone = $data['phone'];
 
-        $userId = Session::get('gay');
+        $userId = Session::get('user_id');
 
         if (!$userId) {
             throw new \Exception('Вы не авторизованы');
@@ -105,14 +93,14 @@ class UserService
 
     function forgetSession(): void
     {
-        if (Session::get('gay')) {
-            Session::forget('gay');
+        if (Session::get('user_id')) {
+            Session::forget('user_id');
         }
     }
 
     function showDashboard() {
-        if (Session::get('gay')) {
-            $user = User::where('id', Session::get('gay'))->first();
+        if (Session::get('user_id')) {
+            $user = User::where('id', Session::get('user_id'))->first();
 
             $cartId = Cart::where('user_id', $user->id)->first()->id;
             $cartItemsIds = Cartitem::where('cart_id', $cartId)->get();

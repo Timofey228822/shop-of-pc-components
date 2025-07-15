@@ -26,6 +26,8 @@ class AdminService
     {
         $glodal_income = User::sum('income');
 
+        
+
         $latest_orders = ProductOrder::paginate(15);
 
         return [
