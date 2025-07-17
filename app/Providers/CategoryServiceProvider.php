@@ -19,6 +19,6 @@ class CategoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->share('categories', \App\Models\Category::paginate(50));
+        //view()->share('categories', \App\Models\Category::paginate(50));
     }
 }

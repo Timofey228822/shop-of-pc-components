@@ -21,7 +21,7 @@ class UserService
         if (User::where('email', $email)->first()) {
             throw new \Exception('Такой чел уже есть');
         }
-
+        
         else {
             $user = User::create([
                 'name' => $name,
@@ -100,7 +100,7 @@ class UserService
 
     function showDashboard() {
         if (Session::get('user_id')) {
-            $user = User::where('id', Session::get('user_id'))->first();
+            $user = User::find( Session::get('user_id'))->first();
 
             $cartId = Cart::where('user_id', $user->id)->first()->id;
             $cartItemsIds = Cartitem::where('cart_id', $cartId)->get();

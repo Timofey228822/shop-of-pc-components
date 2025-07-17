@@ -84,15 +84,16 @@
         <div id="purchases" class="tab-content">
             <h2>История покупок</h2>
             <div id="purchased-items">
-                @foreach ($data[3] as $product)
-                    <div class="purchased-item">
-                        <div>
-                            <div class="product-title">{{ $product->name }}</div>
-                            <div class="product-price">{{ $product->price }}</div>
+                @isset($data[3])
+                    @foreach ($data[3] as $product)
+                        <div class="purchased-item">
+                            <div>
+                                <div class="product-title">{{ $product->name }}</div>
+                                <div class="product-price">{{ $product->price }}</div>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-
+                    @endforeach
+                @endisset
             </div>
         </div>
         <div id="shop" class="tab-content">
