@@ -27,6 +27,7 @@ class UserServiceTest extends TestCase
         $response = $this->post('/create', $user);
 
         $response->assertStatus(302);
+
         $this->assertDatabaseHas('user', [
             'name' => 'John',
             'email' => 'shlatim@yandex.ry'
@@ -50,13 +51,17 @@ class UserServiceTest extends TestCase
 
     public function test_update_data(): void
     {
-        $user = User::factory()->create(['password' => 'dont care']);
+        $user = User::factory()->create([
+            'password' => 'dont care'
+            //// TODO задаешь данные
+        ]);
 
         $response = $this->put('/update_data', $user->toArray());
 
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('user', [
+            //// TODO проверяешь
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone
@@ -71,6 +76,8 @@ class UserServiceTest extends TestCase
 
         $response->assertStatus(302);
 
+
+        //// TODO нужна проверка что дальше
         if (Session::get('user_id')) 
         {
             throw new Exception('Не получилось выйти');
